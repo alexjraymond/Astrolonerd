@@ -3,6 +3,7 @@ body {
   color: white;
   background-image: url("/images/noise-bg.png");
   background-size: cover;
+  overflow: hidden;
 }
 
 .navbar-brand {
@@ -91,4 +92,75 @@ h1 {
 
 .input-group {
   width: 330px;
+}
+
+.sign-image {
+  width: 100%;
+  height: 100%;
+}
+
+.blue-bubble {
+  background-color: #8998a3;
+  border-radius: 1rem;
+  padding: 2px 10px;
+}
+
+.compat-sign {
+  width: 28px;
+  height: auto;
+}
+
+.scope-title {
+  font-size: 64px;
+  font-weight: bold;
+}
+
+.scope-sign {
+  width: 80px;
+  height: auto;
+}
+
+.pink-bubble {
+  background-color: #b790a3;
+  border-radius: 1rem;
+  padding: 2px 10px;
+  margin-top: 2px;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+.padding-left-0 {
+  padding-left: 0;
+}
+
+.margin-right-12 {
+  margin-right: 12px;
+}
+
+.q-mark-background {
+  background-image: url("/images/questionmarksigns.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: 50% 70%;
+  background-size: contain;
+  background-size: 60vh;
+
+  /* background-repeat: */
+}
+
+.signs-bg123 {
+  background-image: url("/images/signsbg.png");
+  background-size: contain;
+}
+
+.q-bg123 {
+  background-image: url("/images/questionmarks.png");
+  background-size: contain;
+}
+
+.padding-top-300 {
+  padding-top: 300px;
+  padding-bottom: 600px;
 }

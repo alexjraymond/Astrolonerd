@@ -41,6 +41,8 @@ function findSign() {
   }
   var desiredSign = signs[month];
   data.userSign = desiredSign;
+  data.signLink = 'images/' + desiredSign + '.png';
+  // data.signLink = 'images/astrolonerd_logo.png';
   return desiredSign;
 
 }
@@ -67,6 +69,8 @@ function getSignData() {
 
     var signObject = xhr.response;
     data.targetScope = signObject;
+    data.compatSign = data.targetScope.compatibility;
+    data.compatSignLink = 'images/' + data.compatSign + '.png';
     // return signObject;
     renderHoroscope();
   });
@@ -77,19 +81,18 @@ function renderHoroscope() {
 
   var $dateRow = document.createElement('div');
   var $dateCol = document.createElement('div');
-  var $dateRange = document.createElement('p');
+  var $dateRange = document.createElement('span');
   var $titleRow = document.createElement('div');
   var $titleCol = document.createElement('div');
-  var $titleH1 = document.createElement('h1');
-  var $titleImageCol = document.createElement('div');
-  var $titleImg = document.createElement('image');
+  var $titleSpan = document.createElement('span');
+  var $titleImg = document.createElement('img');
   var $descriptionRow = document.createElement('div');
   var $descriptionCol = document.createElement('div');
   var $descriptionP = document.createElement('p');
   var $smallInfoRow = document.createElement('div');
   var $compatibilityCol = document.createElement('div');
-  var $compatibilitySign = document.createElement('p');
-  var $compatibilitySignImg = document.createElement('image');
+  var $compatibilitySign = document.createElement('span');
+  var $compatibilitySignImg = document.createElement('img');
   var $moodCol = document.createElement('div');
   var $moodP = document.createElement('p');
   var $colorCol = document.createElement('div');
@@ -104,57 +107,62 @@ function renderHoroscope() {
   $dateRow.appendChild($dateCol);
 
   $dateRange.textContent = data.targetScope.date_range;
+  $dateRange.setAttribute('class', 'blue-bubble');
   $dateCol.appendChild($dateRange);
 
-  $titleRow.setAttribute('class', 'row');
+  $titleRow.setAttribute('class', 'row pink-bubble justify-content-center align-items-center');
   $horoscopeContainer.appendChild($titleRow);
 
   $titleCol.setAttribute('class', 'col');
   $titleRow.appendChild($titleCol);
 
-  $titleH1.textContent = data.userSign;
-  $titleCol.appendChild($titleH1);
+  $titleSpan.textContent = data.userSign;
+  $titleSpan.setAttribute('class', 'scope-title justify-content-center align-items-center d-flex');
+  $titleCol.appendChild($titleSpan);
 
-  $titleImageCol.setAttribute('class', 'col');
-  $titleRow.appendChild($titleImageCol);
+  // $titleImageCol.setAttribute('class', 'col');
+  // $titleRow.appendChild($titleImageCol);
 
-  $titleImg.setAttribute('src', 'images/022-gypsy.png');
-  $titleImageCol.appendChild($titleImg);
+  $titleImg.setAttribute('src', data.signLink);
+  $titleImg.setAttribute('class', 'scope-sign');
+  $titleSpan.appendChild($titleImg);
 
   $descriptionRow.setAttribute('class', 'row');
   $horoscopeContainer.appendChild($descriptionRow);
 
-  $descriptionCol.setAttribute('class', 'col');
+  $descriptionCol.setAttribute('class', 'col pink-bubble my-1');
   $descriptionRow.appendChild($descriptionCol);
 
   $descriptionP.textContent = data.targetScope.description;
   $descriptionCol.appendChild($descriptionP);
 
-  $smallInfoRow.setAttribute('class', 'row');
+  $smallInfoRow.setAttribute('class', 'row row-cols-auto justify-content-center');
   $horoscopeContainer.appendChild($smallInfoRow);
 
-  $compatibilityCol.setAttribute('class', 'col');
+  $compatibilityCol.setAttribute('class', 'col padding-left-0');
   $smallInfoRow.appendChild($compatibilityCol);
 
   $compatibilitySign.textContent = 'Compatibility: ' + data.targetScope.compatibility;
+  $compatibilitySign.setAttribute('class', 'blue-bubble justify-content-center align-items-center d-flex');
   $compatibilityCol.appendChild($compatibilitySign);
 
-  $compatibilitySignImg.setAttribute('src', 'images/022-gypsy.png');
-  $compatibilityCol.appendChild($compatibilitySignImg);
+  $compatibilitySignImg.setAttribute('src', data.compatSignLink);
+  $compatibilitySignImg.setAttribute('class', 'compat-sign');
+  $compatibilitySign.appendChild($compatibilitySignImg);
 
-  $moodCol.setAttribute('class', 'col');
+  $moodCol.setAttribute('class', 'col pink-bubble justify-content-center align-items-center d-flex margin-right-12');
   $smallInfoRow.appendChild($moodCol);
 
   $moodP.textContent = 'Mood: ' + data.targetScope.mood;
   $moodCol.appendChild($moodP);
 
-  $colorCol.setAttribute('class', 'col');
+  $colorCol.setAttribute('class', 'col pink-bubble justify-content-center align-items-center d-flex margin-right-12');
   $smallInfoRow.appendChild($colorCol);
 
   $colorP.textContent = 'Color: ' + data.targetScope.color;
   $colorCol.appendChild($colorP);
 
-  $numberCol.setAttribute('class', 'col');
+  $numberCol.setAttribute('class', 'col pink-bubble justify-content-center align-items-center d-flex');
   $smallInfoRow.appendChild($numberCol);
 
   $numberP.textContent = 'Lucky Number: ' + data.targetScope.lucky_number;

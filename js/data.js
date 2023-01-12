@@ -4,5 +4,8 @@ var data = {
   userBirthdayMonth: null,
   userBirthDay: null,
   userSign: null,
-  targetScope: null
+  targetScope: null,
+  signLink: null,
+  compatSign: null,
+  compatSignLink: null
 };

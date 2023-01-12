@@ -34,7 +34,7 @@
       </div>
     </nav>
   </header>
-  <div class="container my-5">
+  <div class="container my-4">
 
     <div class="row justify-content-center align-items-center view" id="get-started-container">
       <div class=" col-auto one-button">
@@ -42,13 +42,18 @@
       </div>
     </div>
 
-    <div class="row justify-content-center align-items-center view hidden" id="unsure-page" data-view="unsure-page">
-      <div class="col margin-top-300 margin-bottom-600">
-        <button id="whats-my-sign" class="btn btn-pink">I Don't Know My Sign</button>
+    <div class="row justify-content-center align-items-center view hidden q-mark-background" id="unsure-page"
+      data-view="unsure-page">
+      <div class="col justify-content-evenly d-flex">
+        <span class="q-bg padding-top-300 button-closer"><button id="whats-my-sign" class="btn btn-pink">I Don't Know My
+            Sign</button></span>
+        <span class="signs-bg padding-top-300 button-closer-right"><button id="i-know-my-sign" class="btn btn-pink">I
+            Know My
+            Sign</button></span>
       </div>
-      <div class="col margin-top-300 margin-bottom-600">
-        <button id="i-know-my-sign" class="btn btn-pink">I Know My Sign</button>
-      </div>
+      <!-- <div class="col margin-top-300 margin-bottom-600">
+
+      </div> -->
     </div>
 
     <div class="row hidden view" data-view="birthday-form">
@@ -101,7 +106,8 @@
         </div>
       </form>
     </div>
-    <div class="container-sm hidden view" data-view="horoscope-page" id="horoscope-container">
+    <div class="container container-small hidden view" data-view="horoscope-page" id="horoscope-container">
+
 
 
     </div>
