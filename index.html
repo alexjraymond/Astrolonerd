@@ -1,20 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AJAX Project</title>
   <link rel="icon" href="images/favicon.ico">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab+Highlight&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
+
+<!-- experiment with sm/md bootstrap sizes for col row n shit -->
+
 <body>
   <header>
+    <nav class="navbar navbar-bckgrnd">
+      <div class="container-fluid">
+        <div class="row justify-content-end"></div>
+        <a class="navbar-brand" href="#">
+          <img src="/images/astrolonerd_logo.png" alt="Bootstrap" width="36" height="34">
+        </a>
+        <a href="#" class="nav-top-right-text">ASTROLONERD</a>
+      </div>
+    </nav>
   </header>
-  <main>
-  </main>
+  <div class="container my-5">
+
+    <div class="row justify-content-center align-items-center view" id="get-started-container">
+      <div class=" col-auto one-button">
+        <button type="button" class="btn btn-pink" id="get-started">Get Started</button>
+      </div>
+    </div>
+
+    <div class="row justify-content-center align-items-center view hidden" id="unsure-page" data-view="unsure-page">
+      <div class="col margin-top-300 margin-bottom-600">
+        <button id="whats-my-sign" class="btn btn-pink">I Don't Know My Sign</button>
+      </div>
+      <div class="col margin-top-300 margin-bottom-600">
+        <button id="i-know-my-sign" class="btn btn-pink">I Know My Sign</button>
+      </div>
+    </div>
+
+    <div class="row hidden view" data-view="birthday-form">
+      <div class="col justify-content-center align-items-center text-center">
+        <h1>What's Your Birthday?</h1>
+      </div>
+
+      <form id="birthday-form" name="birthday-form">
+        <div class="col text-center">
+          <input type="radio" class="btn-check" name="months" id="January" value="0">
+          <label class="btn month-styling" for="January">January</label>
+          <input type="radio" class="btn-check" name="months" id="February" value="1">
+          <label class="btn month-styling" for="February">February</label>
+          <input type="radio" class="btn-check" name="months" id="March" value="2">
+          <label class="btn month-styling" for="March">March</label>
+        </div>
+        <div class="col text-center">
+          <input type="radio" class="btn-check" name="months" id="April" value="3">
+          <label class="btn month-styling" for="April">April</label>
+          <input type="radio" class="btn-check" name="months" id="May" value="4">
+          <label class="btn month-styling" for="May">May</label>
+          <input type="radio" class="btn-check" name="months" id="June" value="5">
+          <label class="btn month-styling" for="June">June</label>
+        </div>
+        <div class="col text-center">
+          <input type="radio" class="btn-check" name="months" id="July" value="6">
+          <label class="btn month-styling" for="July">July</label>
+          <input type="radio" class="btn-check" name="months" id="August" value="7">
+          <label class="btn month-styling" for="August">August</label>
+          <input type="radio" class="btn-check" name="months" id="September" value="8">
+          <label class="btn month-styling" for="September">September</label>
+        </div>
+        <div class="col text-center">
+          <input type="radio" class="btn-check" name="months" id="October" value="9">
+          <label class="btn month-styling" for="October">October</label>
+          <input type="radio" class="btn-check" name="months" id="November" value="10">
+          <label class="btn month-styling" for="November">November</label>
+          <input type="radio" class="btn-check" name="months" id="December" value="11">
+          <label class="btn month-styling" for="December">December</label>
+        </div>
+        <div class="col text-center justify-content-center d-flex mt-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-calendar-day"></i></span>
+            <input type="text" class="form-control" placeholder="Day of Month (e.g. 01)" maxlength="2" minlength="2"
+              id="day-of-month">
+          </div>
+        </div>
+        <div class="col d-flex justify-content-center">
+          <input class="btn btn-pink" type="submit" value="Submit">
+        </div>
+      </form>
+    </div>
+    <div class="container-sm hidden view" data-view="horoscope-page" id="horoscope-container">
+
+
+    </div>
+
+
+
+
+  </div>
+
+
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/c811705c3c.js" crossorigin="anonymous"></script>
 </body>
+
 </html>

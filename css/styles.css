@@ -1,0 +1,94 @@
+body {
+  font-family: Rubik, sans-serif;
+  color: white;
+  background-image: url("/images/noise-bg.png");
+  background-size: cover;
+}
+
+.navbar-brand {
+  transform: translateX(-50%);
+  left: 50%;
+  position: absolute;
+}
+
+.nav-top-right-text {
+  font-size: 20px;
+  font-family: "Zilla Slab Highlight", cursive;
+  text-decoration: none;
+  color: #fad2e1;
+  background-color: #294c60;
+}
+
+.navbar-bckgrnd {
+  background-color: #926a85;
+}
+
+.btn-pink {
+  font-weight: 400;
+
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #926a85;
+  --bs-btn-border-color: #926a85;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #6a4c60;
+  --bs-btn-hover-border-color: #6a4c60;
+  --bs-btn-focus-shadow-rgb: 49, 132, 253;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #aa7a9a;
+  --bs-btn-active-border-color: #aa7a9a;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+}
+
+.one-button {
+  align-content: center;
+  margin-top: 15%;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.height {
+  margin: 0 auto;
+}
+
+.margin-top-300 {
+  margin-top: 300px;
+}
+
+.month-styling {
+  font-weight: 400;
+  background-color: #aa7a9a;
+  color: white;
+  text-decoration: none;
+  margin: 5px;
+  width: 100px;
+  padding: 5px;
+  border-radius: 5px;
+
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #926a85;
+  --bs-btn-border-color: #926a85;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #6a4c60;
+  --bs-btn-hover-border-color: #6a4c60;
+  --bs-btn-focus-shadow-rgb: 49, 132, 253;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #efc2bb;
+  --bs-btn-active-border-color: #aa7a9a;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+}
+
+.btn-check {
+  color: #efc2bb !important;
+}
+
+h1 {
+  font-weight: 700;
+}
+
+.input-group {
+  width: 330px;
+}
