@@ -4,6 +4,8 @@ var $whatsMySignButton = document.querySelector('#whats-my-sign');
 var $birthdayForm = document.querySelector('#birthday-form');
 var $dayOfMonthInput = document.querySelector('#day-of-month');
 var $horoscopeContainer = document.querySelector('#horoscope-container');
+var $signButtons = document.querySelectorAll('.sign-button');
+var $iKnowMySignButton = document.querySelector('#i-know-my-sign');
 
 $getStartedButton.addEventListener('click', function () {
   $getStartedContainer.classList.add('hidden');
@@ -13,6 +15,10 @@ $getStartedButton.addEventListener('click', function () {
 
 $whatsMySignButton.addEventListener('click', function () {
   viewSwap('birthday-form');
+});
+
+$iKnowMySignButton.addEventListener('click', function () {
+  viewSwap('sign-selection');
 });
 
 var $rowsToSwap = document.querySelectorAll('.view');
@@ -79,6 +85,7 @@ function getSignData() {
 
 function renderHoroscope() {
 
+  var $invisibleSpan = document.createElement('span');
   var $dateRow = document.createElement('div');
   var $dateCol = document.createElement('div');
   var $dateRange = document.createElement('span');
@@ -100,8 +107,13 @@ function renderHoroscope() {
   var $numberCol = document.createElement('div');
   var $numberP = document.createElement('p');
 
+  var $chooseNewSignButtonCol = document.createElement('div');
+  var $chooseNewSignButton = document.createElement('button');
+
+  $horoscopeContainer.appendChild($invisibleSpan);
+
   $dateRow.setAttribute('class', 'row');
-  $horoscopeContainer.appendChild($dateRow);
+  $invisibleSpan.appendChild($dateRow);
 
   $dateCol.setAttribute('class', 'col');
   $dateRow.appendChild($dateCol);
@@ -111,7 +123,7 @@ function renderHoroscope() {
   $dateCol.appendChild($dateRange);
 
   $titleRow.setAttribute('class', 'row pink-bubble justify-content-center align-items-center');
-  $horoscopeContainer.appendChild($titleRow);
+  $invisibleSpan.appendChild($titleRow);
 
   $titleCol.setAttribute('class', 'col');
   $titleRow.appendChild($titleCol);
@@ -120,15 +132,12 @@ function renderHoroscope() {
   $titleSpan.setAttribute('class', 'scope-title justify-content-center align-items-center d-flex');
   $titleCol.appendChild($titleSpan);
 
-  // $titleImageCol.setAttribute('class', 'col');
-  // $titleRow.appendChild($titleImageCol);
-
   $titleImg.setAttribute('src', data.signLink);
   $titleImg.setAttribute('class', 'scope-sign');
   $titleSpan.appendChild($titleImg);
 
   $descriptionRow.setAttribute('class', 'row');
-  $horoscopeContainer.appendChild($descriptionRow);
+  $invisibleSpan.appendChild($descriptionRow);
 
   $descriptionCol.setAttribute('class', 'col pink-bubble my-1');
   $descriptionRow.appendChild($descriptionCol);
@@ -137,7 +146,7 @@ function renderHoroscope() {
   $descriptionCol.appendChild($descriptionP);
 
   $smallInfoRow.setAttribute('class', 'row row-cols-auto justify-content-center');
-  $horoscopeContainer.appendChild($smallInfoRow);
+  $invisibleSpan.appendChild($smallInfoRow);
 
   $compatibilityCol.setAttribute('class', 'col padding-left-0');
   $smallInfoRow.appendChild($compatibilityCol);
@@ -168,4 +177,49 @@ function renderHoroscope() {
   $numberP.textContent = 'Lucky Number: ' + data.targetScope.lucky_number;
   $numberCol.appendChild($numberP);
 
+  $chooseNewSignButtonCol.setAttribute('class', 'col-12 d-flex justify-content-center');
+  $invisibleSpan.appendChild($chooseNewSignButtonCol);
+  $chooseNewSignButton.setAttribute('class', 'blue-bubble change-btn btn justify-content-center align-items-center d-flex mt-5 ');
+  $chooseNewSignButton.setAttribute('id', 'choose-new-sign');
+  $chooseNewSignButton.textContent = 'Choose New Sign';
+  $chooseNewSignButton.addEventListener('click', function () {
+
+    for (var i = 0; i < $invisibleSpan.children.length; i++) {
+
+      $invisibleSpan.remove($invisibleSpan.children);
+    }
+    viewSwap('sign-selection');
+  })
+  ;
+  $chooseNewSignButtonCol.appendChild($chooseNewSignButton);
+
+}
+
+function getKnownSignData(input) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://aztro.sameerkumar.website?sign=' + input + '&day=today');
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+
+    var signObject = xhr.response;
+    data.targetScope = signObject;
+    data.compatSign = data.targetScope.compatibility;
+    data.compatSignLink = 'images/' + data.compatSign + '.png';
+    // return signObject;
+    renderHoroscope();
+  });
+  xhr.send();
+
+}
+
+for (var i = 0; i < $signButtons.length; i++) {
+  $signButtons[i].onclick = function (event) {
+    event.preventDefault();
+    var firedButton = this.value;
+    data.userSign = firedButton;
+    data.signLink = 'images/' + firedButton + '.png';
+    getKnownSignData(firedButton);
+    viewSwap('horoscope-page');
+  };
 }
