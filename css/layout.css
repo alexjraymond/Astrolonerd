@@ -20,7 +20,7 @@
 
 @media (min-width: 1200px) {
   .container-small {
-    width: 700px;
+    width: 650px;
   }
 
   .container-large {
@@ -36,7 +36,7 @@
   }
 }
 
-.container-small,
+/* .container-small,
 .container-large {
   max-width: 100%;
-}
+} */
