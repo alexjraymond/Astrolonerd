@@ -8,5 +8,6 @@ var data = {
   signLink: null,
   compatSign: null,
   compatSignLink: null,
-  day: 'today'
+  day: 'today',
+  compatTrigger: null
 };
