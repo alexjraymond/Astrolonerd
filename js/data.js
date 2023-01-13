@@ -7,5 +7,6 @@ var data = {
   targetScope: null,
   signLink: null,
   compatSign: null,
-  compatSignLink: null
+  compatSignLink: null,
+  day: 'today'
 };

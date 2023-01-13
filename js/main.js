@@ -110,12 +110,18 @@ function renderHoroscope() {
   var $chooseNewSignButtonCol = document.createElement('div');
   var $chooseNewSignButton = document.createElement('button');
 
+  var $yesterdayButton = document.createElement('button');
+  var $tomorrowButton = document.createElement('button');
+  var $todayButton = document.createElement('button');
+
+  var $selectedDateSpan = document.createElement('span');
+
   $horoscopeContainer.appendChild($invisibleSpan);
 
   $dateRow.setAttribute('class', 'row');
   $invisibleSpan.appendChild($dateRow);
 
-  $dateCol.setAttribute('class', 'col');
+  $dateCol.setAttribute('class', 'col justify-content-between d-flex mb-1');
   $dateRow.appendChild($dateCol);
 
   $dateRange.textContent = data.targetScope.date_range;
@@ -124,6 +130,10 @@ function renderHoroscope() {
 
   $titleRow.setAttribute('class', 'row pink-bubble justify-content-center align-items-center');
   $invisibleSpan.appendChild($titleRow);
+
+  $selectedDateSpan.setAttribute('class', 'blue-bubble');
+  $selectedDateSpan.textContent = data.targetScope.current_date;
+  $dateCol.appendChild($selectedDateSpan);
 
   $titleCol.setAttribute('class', 'col');
   $titleRow.appendChild($titleCol);
@@ -177,7 +187,7 @@ function renderHoroscope() {
   $numberP.textContent = 'Lucky Number: ' + data.targetScope.lucky_number;
   $numberCol.appendChild($numberP);
 
-  $chooseNewSignButtonCol.setAttribute('class', 'col-12 d-flex justify-content-center');
+  $chooseNewSignButtonCol.setAttribute('class', 'col-12 d-flex justify-content-evenly');
   $invisibleSpan.appendChild($chooseNewSignButtonCol);
   $chooseNewSignButton.setAttribute('class', 'blue-bubble change-btn btn justify-content-center align-items-center d-flex mt-5 ');
   $chooseNewSignButton.setAttribute('id', 'choose-new-sign');
@@ -191,7 +201,75 @@ function renderHoroscope() {
     viewSwap('sign-selection');
   })
   ;
-  $chooseNewSignButtonCol.appendChild($chooseNewSignButton);
+  $yesterdayButton.textContent = 'Look into the Past...';
+  $yesterdayButton.setAttribute('class', 'blue-bubble change-btn btn justify-content-center align-items-center d-flex mt-5');
+
+  $yesterdayButton.addEventListener('click', function () {
+
+    for (var i = 0; i < $invisibleSpan.children.length; i++) {
+
+      $invisibleSpan.remove($invisibleSpan.children);
+    }
+    data.day = 'yesterday';
+    getYesterTomorrowData('yesterday');
+
+  });
+
+  $tomorrowButton.textContent = 'Look into the Future...';
+  $tomorrowButton.setAttribute('class', 'blue-bubble change-btn btn justify-content-center align-items-center d-flex mt-5');
+
+  $todayButton.textContent = 'Back to the Present';
+  $todayButton.setAttribute('class', 'blue-bubble change-btn btn justify-content-center align-items-center d-flex mt-5');
+
+  $tomorrowButton.addEventListener('click', function () {
+
+    for (var i = 0; i < $invisibleSpan.children.length; i++) {
+
+      $invisibleSpan.remove($invisibleSpan.children);
+    }
+    data.day = 'tomorrow';
+    getYesterTomorrowData('tomorrow');
+  });
+
+  if (data.day === 'yesterday') {
+    $chooseNewSignButtonCol.appendChild($todayButton);
+    $chooseNewSignButtonCol.appendChild($chooseNewSignButton);
+    $chooseNewSignButtonCol.appendChild($tomorrowButton);
+  } if (data.day === 'today') {
+    $chooseNewSignButtonCol.appendChild($yesterdayButton);
+    $chooseNewSignButtonCol.appendChild($chooseNewSignButton);
+    $chooseNewSignButtonCol.appendChild($tomorrowButton);
+  } else if (data.day === 'tomorrow') {
+    $chooseNewSignButtonCol.appendChild($yesterdayButton);
+    $chooseNewSignButtonCol.appendChild($chooseNewSignButton);
+    $chooseNewSignButtonCol.appendChild($todayButton);
+  }
+
+  $todayButton.addEventListener('click', function () {
+
+    for (var i = 0; i < $invisibleSpan.children.length; i++) {
+
+      $invisibleSpan.remove($invisibleSpan.children);
+    }
+    data.day = 'today';
+    getYesterTomorrowData('today');
+  });
+
+}
+
+function getYesterTomorrowData(input) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://aztro.sameerkumar.website?sign=' + data.userSign + '&day=' + input);
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+
+    var signObject = xhr.response;
+    data.targetScope = signObject;
+    data.compatSign = data.targetScope.compatibility;
+    data.compatSignLink = 'images/' + data.compatSign + '.png';
+    renderHoroscope();
+  });
+  xhr.send();
 
 }
 
@@ -206,7 +284,6 @@ function getKnownSignData(input) {
     data.targetScope = signObject;
     data.compatSign = data.targetScope.compatibility;
     data.compatSignLink = 'images/' + data.compatSign + '.png';
-    // return signObject;
     renderHoroscope();
   });
   xhr.send();
