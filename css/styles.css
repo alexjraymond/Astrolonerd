@@ -182,6 +182,7 @@ p {
 
 .change-btn {
   border-style: none;
+  font-size: 14px;
 
   --bs-btn-color: #fff;
   --bs-btn-bg: #8897a3;
