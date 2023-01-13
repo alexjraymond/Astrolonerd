@@ -97,7 +97,7 @@ function renderHoroscope() {
   var $descriptionCol = document.createElement('div');
   var $descriptionP = document.createElement('p');
   var $smallInfoRow = document.createElement('div');
-  var $compatibilityCol = document.createElement('div');
+  var $compatibilityCol = document.createElement('button');
   var $compatibilitySign = document.createElement('span');
   var $compatibilitySignImg = document.createElement('img');
   var $moodCol = document.createElement('div');
@@ -119,6 +119,7 @@ function renderHoroscope() {
   $horoscopeContainer.appendChild($invisibleSpan);
 
   $dateRow.setAttribute('class', 'row');
+  $invisibleSpan.setAttribute('class', 'mb-5 invisible-span');
   $invisibleSpan.appendChild($dateRow);
 
   $dateCol.setAttribute('class', 'col justify-content-between d-flex mb-1');
@@ -131,18 +132,26 @@ function renderHoroscope() {
   $titleRow.setAttribute('class', 'row pink-bubble justify-content-center align-items-center');
   $invisibleSpan.appendChild($titleRow);
 
-  $selectedDateSpan.setAttribute('class', 'blue-bubble');
-  $selectedDateSpan.textContent = data.targetScope.current_date;
-  $dateCol.appendChild($selectedDateSpan);
+  if (data.compatTrigger === null) {
+    $selectedDateSpan.setAttribute('class', 'blue-bubble');
+    $selectedDateSpan.textContent = data.targetScope.current_date;
+    $dateCol.appendChild($selectedDateSpan);
+  }
 
   $titleCol.setAttribute('class', 'col');
   $titleRow.appendChild($titleCol);
 
-  $titleSpan.textContent = data.userSign;
+  if (data.compatTrigger === 'go') {
+    $titleSpan.textContent = data.compatSign;
+    $titleImg.setAttribute('src', data.compatSignLink);
+  } else {
+    $titleSpan.textContent = data.userSign;
+    $titleImg.setAttribute('src', data.signLink);
+  }
+
   $titleSpan.setAttribute('class', 'scope-title justify-content-center align-items-center d-flex');
   $titleCol.appendChild($titleSpan);
 
-  $titleImg.setAttribute('src', data.signLink);
   $titleImg.setAttribute('class', 'scope-sign');
   $titleSpan.appendChild($titleImg);
 
@@ -158,11 +167,19 @@ function renderHoroscope() {
   $smallInfoRow.setAttribute('class', 'row row-cols-auto justify-content-center');
   $invisibleSpan.appendChild($smallInfoRow);
 
-  $compatibilityCol.setAttribute('class', 'col padding-left-0');
-  $smallInfoRow.appendChild($compatibilityCol);
+  $compatibilityCol.addEventListener('click', function () {
+    data.compatTrigger = 'go';
+    compatSignData(data.compatSign);
+  });
+
+  $compatibilityCol.setAttribute('class', 'col padding-left-0 blue-bubble change-btn btn justify-content-center align-items-center d-flex');
+
+  if (data.compatTrigger === null) {
+    $smallInfoRow.appendChild($compatibilityCol);
+  }
 
   $compatibilitySign.textContent = 'Compatibility: ' + data.targetScope.compatibility;
-  $compatibilitySign.setAttribute('class', 'blue-bubble justify-content-center align-items-center d-flex');
+  $compatibilitySign.setAttribute('class', 'justify-content-center align-items-center d-flex');
   $compatibilityCol.appendChild($compatibilitySign);
 
   $compatibilitySignImg.setAttribute('src', data.compatSignLink);
@@ -187,18 +204,18 @@ function renderHoroscope() {
   $numberP.textContent = 'Lucky Number: ' + data.targetScope.lucky_number;
   $numberCol.appendChild($numberP);
 
-  $chooseNewSignButtonCol.setAttribute('class', 'col-12 d-flex justify-content-evenly');
-  $invisibleSpan.appendChild($chooseNewSignButtonCol);
+  $chooseNewSignButtonCol.setAttribute('class', 'col-12 d-flex justify-content-evenly mb-5');
+
+  if (data.compatTrigger === null) {
+    $invisibleSpan.appendChild($chooseNewSignButtonCol);
+  }
   $chooseNewSignButton.setAttribute('class', 'blue-bubble change-btn btn justify-content-center align-items-center d-flex mt-5 ');
   $chooseNewSignButton.setAttribute('id', 'choose-new-sign');
   $chooseNewSignButton.textContent = 'Choose New Sign';
   $chooseNewSignButton.addEventListener('click', function () {
-
-    for (var i = 0; i < $invisibleSpan.children.length; i++) {
-
-      $invisibleSpan.remove($invisibleSpan.children);
-    }
+    clearTheDom();
     viewSwap('sign-selection');
+    data.day = 'today';
   })
   ;
   $yesterdayButton.textContent = 'Look into the Past...';
@@ -211,6 +228,7 @@ function renderHoroscope() {
       $invisibleSpan.remove($invisibleSpan.children);
     }
     data.day = 'yesterday';
+    clearTheDom();
     getYesterTomorrowData('yesterday');
 
   });
@@ -228,6 +246,7 @@ function renderHoroscope() {
       $invisibleSpan.remove($invisibleSpan.children);
     }
     data.day = 'tomorrow';
+    clearTheDom();
     getYesterTomorrowData('tomorrow');
   });
 
@@ -255,6 +274,7 @@ function renderHoroscope() {
     getYesterTomorrowData('today');
   });
 
+  data.compatTrigger = null;
 }
 
 function getYesterTomorrowData(input) {
@@ -300,3 +320,28 @@ for (var i = 0; i < $signButtons.length; i++) {
     viewSwap('horoscope-page');
   };
 }
+
+function compatSignData(input) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://aztro.sameerkumar.website?sign=' + input + '&day=' + data.day);
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+
+    var signObject = xhr.response;
+    data.targetScope = signObject;
+    renderHoroscope();
+  });
+  xhr.send();
+
+}
+
+function clearTheDom() {
+  var $allTheInvisibleSpans = document.querySelectorAll('.invisible-span');
+  for (var elem of $allTheInvisibleSpans) {
+    elem.parentNode.removeChild(elem);
+  }
+}
+
+// var rgba2hex = rgba => `#${rgba.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.{0,1}\d*))?\)$/).slice(1).map((n, i) => (i === 3 ? Math.round(parseFloat(n) * 255) : parseFloat(n)).toString(16).padStart(2, '0').replace('NaN', '')).join('')}`;
+
+// console.log()
