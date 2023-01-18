@@ -21,6 +21,8 @@
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/styles.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <!-- experiment with sm/md bootstrap sizes for col row n shit -->
@@ -179,17 +181,103 @@
       </div>
     </div>
 
+    <div class="row view" data-view="data-page">
+      <div class="col">
+        <canvas id="myChart" class="chart-design"></canvas>
+      </div>
+      <div class="row">
+
+        <div class="col-6">Colors</div>
+
+        <div class="col-6">
+          <table class="table table-hover pink-bubble  table-sm">
+            <thead class="">
+              <tr>
+                <th scope="col" class="table-headers">Sign</th>
+                <th scope="col" class="table-headers d-flex data-table-title border-bottom-0">data
+                  <div class="dropdown">
+                    <button class="btn blue-bubble" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fas fa-bars"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Colors</a></li>
+                      <li><a class="dropdown-item" href="#">Compatibility</a></li>
+                      <li><a class="dropdown-item" href="#">Lucky Numbers</a></li>
+                      <li><a class="dropdown-item" href="#">Moods</a></li>
+                    </ul>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider">
+              <tr>
+                <th scope="row">Aquarius</th>
+                <td id="aquarius-data"></td>
+              </tr>
+              <tr>
+                <th scope="row">Pisces</th>
+                <td id="pisces-data"></td>
+              </tr>
+              <tr>
+                <th scope="row">Aries</th>
+                <td id="aries-data"></td>
+              </tr>
+              <tr>
+                <th scope="row">Taurus</th>
+                <td id="taurus-data"></td>
+              </tr>
+              <tr>
+                <th scope="row">Gemini</th>
+                <td id="gemini-data"></td>
+              </tr>
+              <tr>
+                <th scope="row">Cancer</th>
+                <td id="cancer-data"></td>
+              </tr>
+              <tr>
+                <th scope="row">Leo</th>
+                <td id="leo-data"></td>
+              </tr>
+              <tr>
+                <th scope="row">Virgo</th>
+                <td id="virgo-data"></td>
+              </tr>
+              <tr>
+                <th scope="row">Libra</th>
+                <td id="libra-data"></td>
+              </tr>
+              <tr>
+                <th scope="row">Scorpio</th>
+                <td id="scorpio-data"></td>
+              </tr>
+              <tr>
+                <th scope="row">Sagittarius</th>
+                <td id="sagittarius-data"></td>
+              </tr>
+              <tr>
+                <th scope="row" class="border-bottom-0">Capricorn</th>
+                <td class="border-bottom-0"></td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
 
-  </div>
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
 
 
-  <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-    crossorigin="anonymous"></script>
-  <script src="https://kit.fontawesome.com/c811705c3c.js" crossorigin="anonymous"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/c811705c3c.js" crossorigin="anonymous"></script>
 </body>
 
 </html>

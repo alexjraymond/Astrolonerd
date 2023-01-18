@@ -1,3 +1,5 @@
+/* global Chart */
+
 var $getStartedButton = document.querySelector('#get-started');
 var $getStartedContainer = document.querySelector('#get-started-container');
 var $whatsMySignButton = document.querySelector('#whats-my-sign');
@@ -6,6 +8,8 @@ var $dayOfMonthInput = document.querySelector('#day-of-month');
 var $horoscopeContainer = document.querySelector('#horoscope-container');
 var $signButtons = document.querySelectorAll('.sign-button');
 var $iKnowMySignButton = document.querySelector('#i-know-my-sign');
+// var ctx = document.getElementById('myChart');
+var signs = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
 
 $getStartedButton.addEventListener('click', function () {
   $getStartedContainer.classList.add('hidden');
@@ -342,6 +346,143 @@ function clearTheDom() {
   }
 }
 
-// var rgba2hex = rgba => `#${rgba.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.{0,1}\d*))?\)$/).slice(1).map((n, i) => (i === 3 ? Math.round(parseFloat(n) * 255) : parseFloat(n)).toString(16).padStart(2, '0').replace('NaN', '')).join('')}`;
+var luckyNumbers = {};
+var signColors = {};
+var signMoods = {};
+var signCompats = {};
 
-// console.log()
+function getNerdyData(input) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://aztro.sameerkumar.website?sign=' + input + '&day=today');
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+
+    var signObject = xhr.response;
+
+    luckyNumbers[input] = parseInt(signObject.lucky_number);
+    signColors[input] = signObject.color;
+    signMoods[input] = signObject.mood;
+    signCompats[input] = signObject.compatibility;
+    if (Object.keys(luckyNumbers).length === 12) { chartCreator(); }
+
+  });
+  xhr.send();
+
+}
+
+function runAllTheHoroscopesForData() {
+  var signs = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
+  for (var i = 0; i < signs.length; i++) {
+    getNerdyData(signs[i]);
+
+  }
+}
+
+runAllTheHoroscopesForData();
+
+function chartCreator() {
+  var data = {
+    labels: signs,
+    datasets: [{
+      label: 'Lucky Number',
+      data: [luckyNumbers.Aquarius, luckyNumbers.Pisces, luckyNumbers.Aries, luckyNumbers.Taurus, luckyNumbers.Gemini, luckyNumbers.Cancer, luckyNumbers.Leo, luckyNumbers.Virgo, luckyNumbers.Libra, luckyNumbers.Scorpio, luckyNumbers.Sagittarius, luckyNumbers.Capricorn],
+      borderWidth: 1,
+      backgroundColor: 'pink',
+      borderColor: 'black',
+      color: 'white'
+    }]
+  };
+  var config = {
+    data,
+    type: 'line',
+    options: {
+      animations: {
+        tension: {
+          duration: 1500,
+          easing: 'linear',
+          from: 1,
+          to: 0,
+          loop: true
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  };
+  Chart.defaults.font.size = 16;
+  Chart.defaults.color = 'white';
+
+  // eslint-disable-next-line no-unused-vars
+  var myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+}
+
+const coords = { x: 0, y: 0 };
+const circles = document.querySelectorAll('.circle');
+
+const colors = [
+  '#ffb56b',
+  '#fdaf69',
+  '#f89d63',
+  '#f59761',
+  '#ef865e',
+  '#ec805d',
+  '#e36e5c',
+  '#df685c',
+  '#d5585c',
+  '#d1525c',
+  '#c5415d',
+  '#c03b5d',
+  '#b22c5e',
+  '#ac265e',
+  '#9c155f',
+  '#950f5f',
+  '#830060',
+  '#7c0060',
+  '#680060',
+  '#60005f',
+  '#48005f',
+  '#3d005e'
+];
+
+circles.forEach(function (circle, index) {
+  circle.x = 0;
+  circle.y = 0;
+  circle.style.backgroundColor = colors[index % colors.length];
+});
+
+window.addEventListener('mousemove', function (e) {
+  coords.x = e.clientX;
+  coords.y = e.clientY;
+
+});
+
+function animateCircles() {
+
+  let x = coords.x;
+  let y = coords.y;
+
+  circles.forEach(function (circle, index) {
+    circle.style.left = x - 12 + 'px';
+    circle.style.top = y - 12 + 'px';
+
+    circle.style.scale = (circles.length - index) / circles.length;
+
+    circle.x = x;
+    circle.y = y;
+
+    const nextCircle = circles[index + 1] || circles[0];
+    x += (nextCircle.x - x) * 0.3;
+    y += (nextCircle.y - y) * 0.3;
+  });
+
+  requestAnimationFrame(animateCircles);
+}
+
+animateCircles();
