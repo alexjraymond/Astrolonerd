@@ -174,6 +174,7 @@ function renderHoroscope() {
   $compatibilityCol.addEventListener('click', function () {
     data.compatTrigger = 'go';
     compatSignData(data.compatSign);
+    $compatibilityCol.classList.add('hidden');
   });
 
   $compatibilityCol.setAttribute('class', 'col padding-left-0 blue-bubble change-btn btn justify-content-center align-items-center d-flex');
@@ -351,6 +352,9 @@ var signColors = {};
 var signMoods = {};
 var signCompats = {};
 
+// var allTheData = { luckyNumbers, signColors, signMoods, signCompats };
+// console.log(allTheData);
+
 function getNerdyData(input) {
 
   var xhr = new XMLHttpRequest();
@@ -364,7 +368,7 @@ function getNerdyData(input) {
     signColors[input] = signObject.color;
     signMoods[input] = signObject.mood;
     signCompats[input] = signObject.compatibility;
-    if (Object.keys(luckyNumbers).length === 12) { chartCreator(); }
+    if (Object.keys(luckyNumbers).length === 12) { chartCreator(); dynamicDataColors(); generateMoodTable(); }
 
   });
   xhr.send();
@@ -423,66 +427,90 @@ function chartCreator() {
   );
 }
 
-const coords = { x: 0, y: 0 };
-const circles = document.querySelectorAll('.circle');
-
-const colors = [
-  '#ffb56b',
-  '#fdaf69',
-  '#f89d63',
-  '#f59761',
-  '#ef865e',
-  '#ec805d',
-  '#e36e5c',
-  '#df685c',
-  '#d5585c',
-  '#d1525c',
-  '#c5415d',
-  '#c03b5d',
-  '#b22c5e',
-  '#ac265e',
-  '#9c155f',
-  '#950f5f',
-  '#830060',
-  '#7c0060',
-  '#680060',
-  '#60005f',
-  '#48005f',
-  '#3d005e'
-];
-
-circles.forEach(function (circle, index) {
-  circle.x = 0;
-  circle.y = 0;
-  circle.style.backgroundColor = colors[index % colors.length];
-});
-
-window.addEventListener('mousemove', function (e) {
-  coords.x = e.clientX;
-  coords.y = e.clientY;
-
-});
-
-function animateCircles() {
-
-  let x = coords.x;
-  let y = coords.y;
-
-  circles.forEach(function (circle, index) {
-    circle.style.left = x - 12 + 'px';
-    circle.style.top = y - 12 + 'px';
-
-    circle.style.scale = (circles.length - index) / circles.length;
-
-    circle.x = x;
-    circle.y = y;
-
-    const nextCircle = circles[index + 1] || circles[0];
-    x += (nextCircle.x - x) * 0.3;
-    y += (nextCircle.y - y) * 0.3;
-  });
-
-  requestAnimationFrame(animateCircles);
+function dynamicDataColors() {
+  for (var key in signColors) {
+    colorsBoxesDom(key, signColors[key]);
+  }
 }
 
-animateCircles();
+function colorsBoxesDom(sign, color) {
+  var $colorBoxCol = document.createElement('div');
+  var $colorTooltipSpan = document.createElement('span');
+  var $colorsContainer = document.querySelector('.data-colors-container');
+  var boxColId = sign + '-color';
+  var tooltipId = sign + '-tooltip';
+  $colorBoxCol.style.backgroundColor = color;
+  $colorBoxCol.setAttribute('class', 'col data-colors p-1 m-1');
+  $colorBoxCol.setAttribute('id', boxColId);
+  $colorsContainer.appendChild($colorBoxCol);
+  $colorTooltipSpan.setAttribute('class', 'color-tooltip');
+  $colorTooltipSpan.setAttribute('id', tooltipId);
+  $colorTooltipSpan.textContent = sign + ': ' + color;
+  $colorBoxCol.appendChild($colorTooltipSpan);
+
+}
+
+// dynamically generate the sign table rows + their content as well, same as colors
+
+function tableDataDomGenerator(sign, data) {
+  var $tableRow = document.createElement('tr');
+  var $tableHead = document.createElement('th');
+  var $tableData = document.createElement('td');
+  var $tableBodySelector = document.querySelector('.table-group-divider');
+  var tableDataId = sign + '-data';
+
+  $tableBodySelector.appendChild($tableRow);
+  $tableHead.setAttribute('scope', 'row');
+  $tableHead.textContent = sign;
+  $tableRow.appendChild($tableHead);
+  $tableData.setAttribute('id', tableDataId);
+  $tableData.textContent = data;
+  $tableRow.appendChild($tableData);
+}
+
+var $moodsBurger = document.querySelector('.moods-burger');
+var $compatibilityBurger = document.querySelector('.compatibility-burger');
+var $luckyNumbersBurger = document.querySelector('.lucky-numbers-burger');
+var $colorsBurger = document.querySelector('.colors-burger');
+
+$moodsBurger.addEventListener('click', function () {
+  generateMoodTable();
+});
+
+$compatibilityBurger.addEventListener('click', function () {
+  generateCompatTable();
+});
+
+$luckyNumbersBurger.addEventListener('click', function () {
+  generateLuckyNumberTable();
+});
+
+$colorsBurger.addEventListener('click', function () {
+  generateColorsTable();
+});
+
+function generateMoodTable() {
+  for (var key in signMoods) {
+    tableDataDomGenerator(key, signMoods[key]);
+  }
+}
+
+function generateCompatTable() {
+  for (var key in signCompats) {
+    tableDataDomGenerator(key, signCompats[key]);
+  }
+}
+
+function generateLuckyNumberTable() {
+  for (var key in luckyNumbers) {
+    tableDataDomGenerator(key, luckyNumbers[key]);
+  }
+}
+
+function generateColorsTable() {
+  for (var key in signColors) {
+    tableDataDomGenerator(key, signColors[key]);
+  }
+}
+
+// DELETE THE TABLE DOM AT START OF EACH TABLE GENERATE FUNCTION
