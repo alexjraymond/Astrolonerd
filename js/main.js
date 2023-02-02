@@ -56,8 +56,7 @@ function findSign() {
   }
   var desiredSign = signs[month];
   data.userSign = desiredSign;
-  data.signLink = 'images/' + desiredSign + '.png';
-  // data.signLink = 'images/astrolonerd_logo.png';
+  data.signLink = './images/' + desiredSign + '.png';
   return desiredSign;
 
 }
@@ -85,7 +84,7 @@ function getSignData() {
     var signObject = xhr.response;
     data.targetScope = signObject;
     data.compatSign = data.targetScope.compatibility;
-    data.compatSignLink = 'images/' + data.compatSign + '.png';
+    data.compatSignLink = './images/' + data.compatSign + '.png';
     // return signObject;
     renderHoroscope();
   });
@@ -309,7 +308,7 @@ function getYesterTomorrowData(input) {
     var signObject = xhr.response;
     data.targetScope = signObject;
     data.compatSign = data.targetScope.compatibility;
-    data.compatSignLink = 'images/' + data.compatSign + '.png';
+    data.compatSignLink = './images/' + data.compatSign + '.png';
     renderHoroscope();
   });
   xhr.send();
@@ -326,7 +325,7 @@ function getKnownSignData(input) {
     var signObject = xhr.response;
     data.targetScope = signObject;
     data.compatSign = data.targetScope.compatibility;
-    data.compatSignLink = 'images/' + data.compatSign + '.png';
+    data.compatSignLink = './images/' + data.compatSign + '.png';
     renderHoroscope();
   });
   xhr.send();
@@ -338,7 +337,7 @@ for (var i = 0; i < $signButtons.length; i++) {
     event.preventDefault();
     var firedButton = this.value;
     data.userSign = firedButton;
-    data.signLink = 'images/' + firedButton + '.png';
+    data.signLink = './images/' + firedButton + '.png';
     getKnownSignData(firedButton);
     viewSwap('horoscope-page');
   };
