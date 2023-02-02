@@ -273,3 +273,26 @@ h2 {
 .data-colors:hover .color-tooltip {
   display: block;
 }
+
+/* need sass and/or if statements to put in colors and or splice the color names eg spring green -> springgreen */
+
+/* stylelint-disable-next-line no-descending-specificity */
+th {
+  border: none;
+}
+
+td {
+  border: none;
+}
+
+.shadowblack {
+  background-color: rgb(35, 35, 35);
+}
+
+.navyblue {
+  background-color: navy;
+}
+
+.rosepink {
+  background-color: rgb(253, 165, 180);
+}

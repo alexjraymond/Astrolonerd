@@ -25,14 +25,12 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<!-- experiment with sm/md bootstrap sizes for col row n shit -->
-
 <body>
   <header>
     <nav class="navbar navbar-bckgrnd">
       <div class="container-fluid">
         <div class="row justify-content-end"></div>
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="#" id="logo">
           <img src="/images/astrolonerd_logo.png" alt="Bootstrap" width="36" height="34">
         </a>
         <a href="#" class="nav-top-right-text">ASTROLONERD</a>
@@ -181,7 +179,7 @@
       </div>
     </div>
 
-    <div class="container container-small view" data-view="data-page">
+    <div class="container container-small view hidden" data-view="data-page">
 
       <div class="row view" data-view="data-page">
         <div class="col">
@@ -221,7 +219,7 @@
                   </th>
                 </tr>
               </thead>
-              <tbody class="table-group-divider">
+              <tbody class="table-group-divider" id="t-body">
 
               </tbody>
             </table>

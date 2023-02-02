@@ -8,8 +8,13 @@ var $dayOfMonthInput = document.querySelector('#day-of-month');
 var $horoscopeContainer = document.querySelector('#horoscope-container');
 var $signButtons = document.querySelectorAll('.sign-button');
 var $iKnowMySignButton = document.querySelector('#i-know-my-sign');
-// var ctx = document.getElementById('myChart');
+var $logoNavBar = document.querySelector('#logo');
 var signs = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
+
+$logoNavBar.addEventListener('click', function () {
+  viewSwap('unsure-page');
+  clearTheDom();
+});
 
 $getStartedButton.addEventListener('click', function () {
   $getStartedContainer.classList.add('hidden');
@@ -120,6 +125,9 @@ function renderHoroscope() {
 
   var $selectedDateSpan = document.createElement('span');
 
+  const $dataButton = document.createElement('button');
+  const $dataCol = document.createElement('div');
+
   $horoscopeContainer.appendChild($invisibleSpan);
 
   $dateRow.setAttribute('class', 'row');
@@ -177,6 +185,10 @@ function renderHoroscope() {
     $compatibilityCol.classList.add('hidden');
   });
 
+  $dataButton.addEventListener('click', () => {
+    viewSwap('data-page');
+  });
+
   $compatibilityCol.setAttribute('class', 'col padding-left-0 blue-bubble change-btn btn justify-content-center align-items-center d-flex');
 
   if (data.compatTrigger === null) {
@@ -208,6 +220,12 @@ function renderHoroscope() {
 
   $numberP.textContent = 'Lucky Number: ' + data.targetScope.lucky_number;
   $numberCol.appendChild($numberP);
+
+  $dataCol.setAttribute('class', 'justify-content-center align-items-center d-flex');
+  $dataButton.textContent = 'Fun Data 🍆';
+  $dataButton.setAttribute('class', 'blue-bubble change-btn btn');
+  $dataCol.appendChild($dataButton);
+  $smallInfoRow.appendChild($dataCol);
 
   $chooseNewSignButtonCol.setAttribute('class', 'col-12 d-flex justify-content-evenly mb-5');
 
@@ -347,13 +365,17 @@ function clearTheDom() {
   }
 }
 
+const clearTheTableDom = () => {
+  var $allTheTableRows = document.querySelectorAll('#data-row');
+  for (var elem of $allTheTableRows) {
+    elem.parentNode.removeChild(elem);
+  }
+};
+
 var luckyNumbers = {};
 var signColors = {};
 var signMoods = {};
 var signCompats = {};
-
-// var allTheData = { luckyNumbers, signColors, signMoods, signCompats };
-// console.log(allTheData);
 
 function getNerdyData(input) {
 
@@ -439,8 +461,11 @@ function colorsBoxesDom(sign, color) {
   var $colorsContainer = document.querySelector('.data-colors-container');
   var boxColId = sign + '-color';
   var tooltipId = sign + '-tooltip';
+  if (color.includes(' ')) {
+    color = color.split(' ').join('').toLowerCase();
+  }
   $colorBoxCol.style.backgroundColor = color;
-  $colorBoxCol.setAttribute('class', 'col data-colors p-1 m-1');
+  $colorBoxCol.setAttribute('class', `col data-colors p-1 m-1 ${color}`);
   $colorBoxCol.setAttribute('id', boxColId);
   $colorsContainer.appendChild($colorBoxCol);
   $colorTooltipSpan.setAttribute('class', 'color-tooltip');
@@ -449,8 +474,6 @@ function colorsBoxesDom(sign, color) {
   $colorBoxCol.appendChild($colorTooltipSpan);
 
 }
-
-// dynamically generate the sign table rows + their content as well, same as colors
 
 function tableDataDomGenerator(sign, data) {
   var $tableRow = document.createElement('tr');
@@ -463,6 +486,7 @@ function tableDataDomGenerator(sign, data) {
   $tableHead.setAttribute('scope', 'row');
   $tableHead.textContent = sign;
   $tableRow.appendChild($tableHead);
+  $tableRow.setAttribute('id', 'data-row');
   $tableData.setAttribute('id', tableDataId);
   $tableData.textContent = data;
   $tableRow.appendChild($tableData);
@@ -474,18 +498,22 @@ var $luckyNumbersBurger = document.querySelector('.lucky-numbers-burger');
 var $colorsBurger = document.querySelector('.colors-burger');
 
 $moodsBurger.addEventListener('click', function () {
+  clearTheTableDom();
   generateMoodTable();
 });
 
 $compatibilityBurger.addEventListener('click', function () {
+  clearTheTableDom();
   generateCompatTable();
 });
 
 $luckyNumbersBurger.addEventListener('click', function () {
+  clearTheTableDom();
   generateLuckyNumberTable();
 });
 
 $colorsBurger.addEventListener('click', function () {
+  clearTheTableDom();
   generateColorsTable();
 });
 
@@ -512,5 +540,3 @@ function generateColorsTable() {
     tableDataDomGenerator(key, signColors[key]);
   }
 }
-
-// DELETE THE TABLE DOM AT START OF EACH TABLE GENERATE FUNCTION
