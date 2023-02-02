@@ -1,3 +1,5 @@
+/* global Chart */
+
 var $getStartedButton = document.querySelector('#get-started');
 var $getStartedContainer = document.querySelector('#get-started-container');
 var $whatsMySignButton = document.querySelector('#whats-my-sign');
@@ -6,6 +8,13 @@ var $dayOfMonthInput = document.querySelector('#day-of-month');
 var $horoscopeContainer = document.querySelector('#horoscope-container');
 var $signButtons = document.querySelectorAll('.sign-button');
 var $iKnowMySignButton = document.querySelector('#i-know-my-sign');
+var $logoNavBar = document.querySelector('#logo');
+var signs = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
+
+$logoNavBar.addEventListener('click', function () {
+  viewSwap('unsure-page');
+  clearTheDom();
+});
 
 $getStartedButton.addEventListener('click', function () {
   $getStartedContainer.classList.add('hidden');
@@ -47,8 +56,7 @@ function findSign() {
   }
   var desiredSign = signs[month];
   data.userSign = desiredSign;
-  data.signLink = 'images/' + desiredSign + '.png';
-  // data.signLink = 'images/astrolonerd_logo.png';
+  data.signLink = './images/' + desiredSign + '.png';
   return desiredSign;
 
 }
@@ -76,7 +84,7 @@ function getSignData() {
     var signObject = xhr.response;
     data.targetScope = signObject;
     data.compatSign = data.targetScope.compatibility;
-    data.compatSignLink = 'images/' + data.compatSign + '.png';
+    data.compatSignLink = './images/' + data.compatSign + '.png';
     // return signObject;
     renderHoroscope();
   });
@@ -115,6 +123,9 @@ function renderHoroscope() {
   var $todayButton = document.createElement('button');
 
   var $selectedDateSpan = document.createElement('span');
+
+  const $dataButton = document.createElement('button');
+  const $dataCol = document.createElement('div');
 
   $horoscopeContainer.appendChild($invisibleSpan);
 
@@ -170,6 +181,11 @@ function renderHoroscope() {
   $compatibilityCol.addEventListener('click', function () {
     data.compatTrigger = 'go';
     compatSignData(data.compatSign);
+    $compatibilityCol.classList.add('hidden');
+  });
+
+  $dataButton.addEventListener('click', () => {
+    viewSwap('data-page');
   });
 
   $compatibilityCol.setAttribute('class', 'col padding-left-0 blue-bubble change-btn btn justify-content-center align-items-center d-flex');
@@ -203,6 +219,12 @@ function renderHoroscope() {
 
   $numberP.textContent = 'Lucky Number: ' + data.targetScope.lucky_number;
   $numberCol.appendChild($numberP);
+
+  $dataCol.setAttribute('class', 'justify-content-center align-items-center d-flex');
+  $dataButton.textContent = 'Fun Data 🍆';
+  $dataButton.setAttribute('class', 'blue-bubble change-btn btn');
+  $dataCol.appendChild($dataButton);
+  $smallInfoRow.appendChild($dataCol);
 
   $chooseNewSignButtonCol.setAttribute('class', 'col-12 d-flex justify-content-evenly mb-5');
 
@@ -286,7 +308,7 @@ function getYesterTomorrowData(input) {
     var signObject = xhr.response;
     data.targetScope = signObject;
     data.compatSign = data.targetScope.compatibility;
-    data.compatSignLink = 'images/' + data.compatSign + '.png';
+    data.compatSignLink = './images/' + data.compatSign + '.png';
     renderHoroscope();
   });
   xhr.send();
@@ -303,7 +325,7 @@ function getKnownSignData(input) {
     var signObject = xhr.response;
     data.targetScope = signObject;
     data.compatSign = data.targetScope.compatibility;
-    data.compatSignLink = 'images/' + data.compatSign + '.png';
+    data.compatSignLink = './images/' + data.compatSign + '.png';
     renderHoroscope();
   });
   xhr.send();
@@ -315,7 +337,7 @@ for (var i = 0; i < $signButtons.length; i++) {
     event.preventDefault();
     var firedButton = this.value;
     data.userSign = firedButton;
-    data.signLink = 'images/' + firedButton + '.png';
+    data.signLink = './images/' + firedButton + '.png';
     getKnownSignData(firedButton);
     viewSwap('horoscope-page');
   };
@@ -342,6 +364,178 @@ function clearTheDom() {
   }
 }
 
-// var rgba2hex = rgba => `#${rgba.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.{0,1}\d*))?\)$/).slice(1).map((n, i) => (i === 3 ? Math.round(parseFloat(n) * 255) : parseFloat(n)).toString(16).padStart(2, '0').replace('NaN', '')).join('')}`;
+const clearTheTableDom = () => {
+  var $allTheTableRows = document.querySelectorAll('#data-row');
+  for (var elem of $allTheTableRows) {
+    elem.parentNode.removeChild(elem);
+  }
+};
 
-// console.log()
+var luckyNumbers = {};
+var signColors = {};
+var signMoods = {};
+var signCompats = {};
+
+function getNerdyData(input) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://aztro.sameerkumar.website?sign=' + input + '&day=today');
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+
+    var signObject = xhr.response;
+
+    luckyNumbers[input] = parseInt(signObject.lucky_number);
+    signColors[input] = signObject.color;
+    signMoods[input] = signObject.mood;
+    signCompats[input] = signObject.compatibility;
+    if (Object.keys(luckyNumbers).length === 12) { chartCreator(); dynamicDataColors(); generateMoodTable(); }
+
+  });
+  xhr.send();
+
+}
+
+function runAllTheHoroscopesForData() {
+  var signs = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
+  for (var i = 0; i < signs.length; i++) {
+    getNerdyData(signs[i]);
+
+  }
+}
+
+runAllTheHoroscopesForData();
+
+function chartCreator() {
+  var data = {
+    labels: signs,
+    datasets: [{
+      label: 'Lucky Number',
+      data: [luckyNumbers.Aquarius, luckyNumbers.Pisces, luckyNumbers.Aries, luckyNumbers.Taurus, luckyNumbers.Gemini, luckyNumbers.Cancer, luckyNumbers.Leo, luckyNumbers.Virgo, luckyNumbers.Libra, luckyNumbers.Scorpio, luckyNumbers.Sagittarius, luckyNumbers.Capricorn],
+      borderWidth: 1,
+      backgroundColor: 'pink',
+      borderColor: 'black',
+      color: 'white'
+    }]
+  };
+  var config = {
+    data,
+    type: 'line',
+    options: {
+      animations: {
+        tension: {
+          duration: 1500,
+          easing: 'linear',
+          from: 1,
+          to: 0,
+          loop: true
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  };
+  Chart.defaults.font.size = 16;
+  Chart.defaults.color = 'white';
+
+  // eslint-disable-next-line no-unused-vars
+  var myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+}
+
+function dynamicDataColors() {
+  for (var key in signColors) {
+    colorsBoxesDom(key, signColors[key]);
+  }
+}
+
+function colorsBoxesDom(sign, color) {
+  var $colorBoxCol = document.createElement('div');
+  var $colorTooltipSpan = document.createElement('span');
+  var $colorsContainer = document.querySelector('.data-colors-container');
+  var boxColId = sign + '-color';
+  var tooltipId = sign + '-tooltip';
+  if (color.includes(' ')) {
+    color = color.split(' ').join('').toLowerCase();
+  }
+  $colorBoxCol.style.backgroundColor = color;
+  $colorBoxCol.setAttribute('class', `col data-colors p-1 m-1 ${color}`);
+  $colorBoxCol.setAttribute('id', boxColId);
+  $colorsContainer.appendChild($colorBoxCol);
+  $colorTooltipSpan.setAttribute('class', 'color-tooltip');
+  $colorTooltipSpan.setAttribute('id', tooltipId);
+  $colorTooltipSpan.textContent = sign + ': ' + color;
+  $colorBoxCol.appendChild($colorTooltipSpan);
+
+}
+
+function tableDataDomGenerator(sign, data) {
+  var $tableRow = document.createElement('tr');
+  var $tableHead = document.createElement('th');
+  var $tableData = document.createElement('td');
+  var $tableBodySelector = document.querySelector('.table-group-divider');
+  var tableDataId = sign + '-data';
+
+  $tableBodySelector.appendChild($tableRow);
+  $tableHead.setAttribute('scope', 'row');
+  $tableHead.textContent = sign;
+  $tableRow.appendChild($tableHead);
+  $tableRow.setAttribute('id', 'data-row');
+  $tableData.setAttribute('id', tableDataId);
+  $tableData.textContent = data;
+  $tableRow.appendChild($tableData);
+}
+
+var $moodsBurger = document.querySelector('.moods-burger');
+var $compatibilityBurger = document.querySelector('.compatibility-burger');
+var $luckyNumbersBurger = document.querySelector('.lucky-numbers-burger');
+var $colorsBurger = document.querySelector('.colors-burger');
+
+$moodsBurger.addEventListener('click', function () {
+  clearTheTableDom();
+  generateMoodTable();
+});
+
+$compatibilityBurger.addEventListener('click', function () {
+  clearTheTableDom();
+  generateCompatTable();
+});
+
+$luckyNumbersBurger.addEventListener('click', function () {
+  clearTheTableDom();
+  generateLuckyNumberTable();
+});
+
+$colorsBurger.addEventListener('click', function () {
+  clearTheTableDom();
+  generateColorsTable();
+});
+
+function generateMoodTable() {
+  for (var key in signMoods) {
+    tableDataDomGenerator(key, signMoods[key]);
+  }
+}
+
+function generateCompatTable() {
+  for (var key in signCompats) {
+    tableDataDomGenerator(key, signCompats[key]);
+  }
+}
+
+function generateLuckyNumberTable() {
+  for (var key in luckyNumbers) {
+    tableDataDomGenerator(key, luckyNumbers[key]);
+  }
+}
+
+function generateColorsTable() {
+  for (var key in signColors) {
+    tableDataDomGenerator(key, signColors[key]);
+  }
+}
