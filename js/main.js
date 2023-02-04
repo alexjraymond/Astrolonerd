@@ -460,6 +460,9 @@ function colorsBoxesDom(sign, color) {
   var $colorsContainer = document.querySelector('.data-colors-container');
   var boxColId = sign + '-color';
   var tooltipId = sign + '-tooltip';
+  $colorTooltipSpan.setAttribute('class', 'color-tooltip');
+  $colorTooltipSpan.setAttribute('id', tooltipId);
+  $colorTooltipSpan.textContent = sign + ': ' + color;
   if (color.includes(' ')) {
     color = color.split(' ').join('').toLowerCase();
   }
@@ -467,11 +470,7 @@ function colorsBoxesDom(sign, color) {
   $colorBoxCol.setAttribute('class', `col data-colors p-1 m-1 ${color}`);
   $colorBoxCol.setAttribute('id', boxColId);
   $colorsContainer.appendChild($colorBoxCol);
-  $colorTooltipSpan.setAttribute('class', 'color-tooltip');
-  $colorTooltipSpan.setAttribute('id', tooltipId);
-  $colorTooltipSpan.textContent = sign + ': ' + color;
   $colorBoxCol.appendChild($colorTooltipSpan);
-
 }
 
 function tableDataDomGenerator(sign, data) {
